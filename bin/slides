@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec scala -Dscala.color -language:_ -nowarn -i ~/ip/REPLesent/REPLesent.scala bin/slides.rc

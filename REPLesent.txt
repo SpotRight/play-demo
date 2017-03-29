@@ -1,0 +1,124 @@
+| \gBasic MVC with Scala Play
+
+The Model-View-Controller (MVC) pattern attempts to separate
+\bdomain representation\s (Model) from \bpresentation\s (View).
+
+One or more Controllers transform input into commands to the
+Models and Views.
+---
+| \gMVC Best Practices
+
+* Model's state change is owned by Model
+   * E.g., Event Sourcing
+
+* View treats Model as read-only
+---
+| \gRequest -> Response
+
+1. HTTP request provided on Play's port
+
+   * Header
+      * Method
+      * URL
+      * Content-type
+   * Body (Optional)
+--
+
+2. Play calls a controller method based on \bconf/routes\s.
+
+   GET /order/:id       controllers.Orders.getOrder(id: Long)
+   PUT /order/:id       controllers.Orders.putOrder(id: Long)
+--
+
+3. Controller method provides a response.
+
+   a. Send commands to Model for state-change or information.
+   b. Invoke View for appropriate response.
+
+  -or-
+
+   a. Partial handling and redirect to other endpoint
+---
+| \gCreating a Play Application
+
+1. Can now do it straight from sbt (0.13.13+).
+
+   \ccd ~/work/IdeaProjects
+   \c[ -d spotright.sbt ] && mv spotright.sbt spotright-sbt\s [*]
+   \csbt new playframework/play-scala-seed.g8
+   \ccd play-demo
+
+ * Sbt gets confused by our \bspotright.sbt\s's suffix.
+--
+
+2. Remove gradle build config which we don't use.
+
+   \crm -rf *gradle*
+---
+| \gRunning Play
+
+At this point \csbt run\s will start the app and respond to
+endpoints at \bhttp://localhost:9000\s.
+
+| \mDemo and a\s :pony:
+--
+
+1. HTTP request provided on Play's port.
+
+   method: GET
+   path  : /
+--
+
+2. Routed to controller method based on \bconf/routes\s.
+
+   GET /   controllers.HomeController.index
+--
+
+3. Controller method provides response.
+
+```
+    Ok(views.html.index())
+```
+---
+| \gExtending: Web RPC
+
+Goal: Store numbers and add them by name.
+--
+
+1. Implement a model.  \bmodels.SymbolTable
+--
+
+2. Implement a controller.  \bcontrollers.Adder
+   a. Modify \bbuild.sbt\s for Scalaz
+   b. Modify \bconf/routes
+--
+
+3. Play around with \bcurl
+
+   \ccurl -sS http://localhost:9000/put/a/3
+   \ccurl -sS http://localhost:9000/put/b/4
+   \ccurl -sS http://localhost:9000/add/a/b
+   \ccurl -sS http://localhost:9000/add/a/c
+---
+| \gExtending: Form Processing
+
+Goal: Accept and process form submissions.
+See: https://www.theguardian.com/info/developer-blog/2015/dec/30/how-to-add-a-form-to-a-play-application
+__
+
+1. Implement a model.  \bmodels.Pizza
+--
+
+2. Implement a controller.  \bcontrollers.PizzaController
+   a. Modify \bconf/routes
+--
+
+3. Implement some views.  \bviews.pizza\s, \bviews.showPizza
+   a. Note some \b@helper\s use and some raw html.
+--
+
+4. Play around with the browser
+
+   \chttp://localhost:9000/pizza/order
+---
+| \gQ & A

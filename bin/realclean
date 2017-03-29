@@ -1,0 +1,3 @@
+#!/bin/bash
+exec rm -rf app build.sbt conf logs project public target test \
+    .idea .gitignore .g8
