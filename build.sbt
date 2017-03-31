@@ -1,14 +1,19 @@
-name := """play-demo"""
-organization := "com.spotright"
+lazy val root =
+  (project in file(".")).
+    enablePlugins(PlayScala).
+    settings(
+      name := "play-demo",
+      organization := "com.spotright",
+      version := "1.0-SNAPSHOT",
 
-version := "1.0-SNAPSHOT"
+      scalaVersion := "2.11.8",
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala)
-
-scalaVersion := "2.11.8"
-
-libraryDependencies += filters
-libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "2.0.0" % Test
+      libraryDependencies += filters,
+      libraryDependencies ++= Seq(
+        "org.scalaz" %% "scalaz-core" % "7.2.6",
+        "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.1" % Test
+      )
+    )
 
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "com.spotright.controllers._"
