@@ -12,3 +12,9 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 # Not RESTful
 GET     /put/:key/:value            controllers.Adder.put(key: String, value: Int)
 GET     /add/:a/:b                  controllers.Adder.add(a: String, b: String)
+
+# Pizza
+GET     /pizza/order                controllers.PizzaController.editOrder
+POST    /pizza/processOrder         controllers.PizzaController.processOrder
+GET     /pizza/showOrder            controllers.PizzaController.showOrder
+

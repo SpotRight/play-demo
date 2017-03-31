@@ -1,0 +1,28 @@
+@(in: Pizza)
+
+@import models.Pizza
+
+@pizzaMaybeCheese = @{
+  if (in.extraCheese)
+    "pizza with extra cheese."
+  else
+    "pizza."
+}
+
+<h1>Your Order</h1>
+
+<p>
+    You've ordered a @{Pizza.sizes(in.size)} @pizzaMaybeCheese
+</p>
+
+<div>
+@if(in.tops.isEmpty) {
+} else {
+    <h2>Your Toppings</h2>
+    <ul>
+    @for(t <- in.tops) {
+        <li>@t</li>
+    }
+    </ul>
+}
+</div>

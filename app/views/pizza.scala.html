@@ -1,0 +1,38 @@
+@(theForm: Form[Pizza])(implicit messages: Messages, header: RequestHeader)
+
+@import models.Tops
+
+@scripts = {
+  <script src="@routes.Assets.versioned("javascripts/checkboxlimit.js")"></script>
+}
+
+@main("Pizza Order", scripts) {
+<h1>Order Your Pizza</h1>
+
+  @helper.form(action = routes.PizzaController.processOrder, 'name -> "order") {
+    @helper.CSRF.formField
+
+    @helper.inputRadioGroup(
+      theForm("size"),
+      options = List("S" -> "Small", "M" -> "Medium", "L" -> "Large"),
+      '_label -> "Size",
+      '_error -> theForm("size").error.map(_.withMessage("select size")))
+
+    @helper.checkbox(
+      theForm("extraCheese"),
+      '_label -> "Extra Cheese",
+      '_showConstraints -> false
+    )
+
+    <fieldset name="toppings" id="toppings">
+        <legend>Toppings (Choose 3)</legend>
+        @for(t <- Tops.values) {
+          <input type="checkbox" name="tops[]" id="tops_@{t}" value="@t"> @t <br/>
+        }
+    </fieldset>
+
+    <br/>
+    <button type="submit">Order</button>
+  }
+
+}
